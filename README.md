@@ -60,11 +60,13 @@ src/
 ├── constants/                   # App constants and enums
 ├── utils/                       # Utility functions
 │   ├── express-app.ts
-│   ├── auth-util.ts
 │   ├── config.ts
 │   ├── error.interceptor.ts
 │   ├── response.interceptor.ts
 │   └── security.ts
+├── middlewares/                 # Request middlewares
+│   ├── access-control.middleware.ts
+│   └── auth.middleware.ts
 ├── audit/                       # Audit logging
 └── db/                          # Database connection
 ```
@@ -206,6 +208,30 @@ The service includes comprehensive error handling with:
 - CORS configuration
 - Body parser limits
 - Input validation service
+
+## Access Control Middleware
+
+The project exposes middleware to handle authentication and role-based access control:
+
+- **`src/middlewares/auth.middleware.ts` (`validateRequest`)**: Verifies the incoming JWT access token, populates `req.user` with the decoded user payload, and rejects unauthorized requests with HTTP `401` or `403` using the project's `CustomError` class.
+
+- **`src/middlewares/access-control.middleware.ts` (`authorizeRoles`)**: A small role-authorisation helper that checks `req.user.role` against an allowed list of roles and throws a `403 Forbidden` if the current user does not match any allowed role.
+
+Usage example (routes):
+
+```ts
+import { validateRequest } from './middlewares/auth.middleware';
+import { authorizeRoles } from './middlewares/access-control.middleware';
+
+// Example: only users with the 'admin' role can access this endpoint
+router.post('/admin-only', validateRequest, authorizeRoles('admin'), adminController.action);
+```
+
+Notes:
+
+- `authorizeRoles` expects `req.user` to be set by the authentication middleware (`validateRequest`).
+- Both middlewares throw `CustomError` instances that are handled by the application's centralized error interceptor.
+- Ensure your JWT payload includes a `role` field when issuing tokens so that role checks work correctly.
 
 ## Audit Trail
 
