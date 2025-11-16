@@ -1,0 +1,60 @@
+{
+  "name": "intranet-utilservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "scripts": {
+    "build": "npm run clean && tsc --build",
+    "clean": "rimraf ./dist ./.nyc_coverage ./.nyc_output",
+    "coverage": "nyc npm run test",
+    "dev": "nodemon --exec tsx --env-file=env/dev.env src/main.ts",
+    "lint": "eslint src --fix",
+    "start": "npm run build && node --env-file=env/dev.env dist/main.js",
+    "test": "node --import tsx --env-file=env/test.env ./node_modules/mocha/bin/_mocha src/specs/**/*.spec.ts --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ks-fullstack/intranet-utilservice.git"
+  },
+  "keywords": [
+    "utilservice",
+    "util-microservice",
+    "util-service",
+    "intranet-utilservice",
+    "util-api"
+  ],
+  "author": "Krishna Sawant",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ks-fullstack/intranet-utilservice/issues"
+  },
+  "homepage": "https://github.com/ks-fullstack/intranet-utilservice#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "nodemailer": "^7.0.10"
+  },
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.0",
+    "@types/chai": "^5.2.3",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/mocha": "^10.0.10",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^22.12.0",
+    "@types/nodemailer": "^6.4.17",
+    "@types/supertest": "^6.0.3",
+    "chai": "^6.2.1",
+    "mocha": "^11.7.5",
+    "nodemon": "^3.1.9",
+    "nyc": "^17.1.0",
+    "rimraf": "^6.1.0",
+    "supertest": "^7.1.4",
+    "tsx": "^4.20.6",
+    "typescript": "^5.7.3"
+  }
+}
